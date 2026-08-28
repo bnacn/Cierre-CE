@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cierre del Ejercicio · Coordinadores Especiales · SGCN BNA</title>
+<style>
+  :root{
+    --azul-oscuro:#003366;
+    --azul-medio:#1f6ecf;
+    --azul-claro:#eaf2ff;
+    --fondo-1:#f6f8fb;
+    --fondo-2:#edf2f7;
+    --texto:#172033;
+    --texto-muted:#526071;
+    --verde:#2a9d50;
+    --verde-claro:#e8f7ee;
+    --naranja:#f4a261;
+    --naranja-claro:#fff8ea;
+    --rojo:#d62828;
+    --rojo-claro:#fdecec;
+    --adj:#b1560f;
+    --adj-claro:#fdf1e6;
+    --borde:#dce5ef;
+    --radio:14px;
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    margin:0;
+    font-family:"Segoe UI",Arial,sans-serif;
+    background:linear-gradient(180deg,var(--fondo-1) 0%,var(--fondo-2) 100%);
+    color:var(--texto);
+    line-height:1.6;
+  }
+  ::selection{background:var(--azul-claro);color:var(--azul-oscuro)}
+  a{color:var(--azul-medio)}
+
+  .cw-wrap{max-width:980px;margin:0 auto;padding:0 24px}
+  section{padding:88px 0 64px}
+  .cw-eyebrow{
+    display:inline-block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;
+    font-weight:750;color:var(--azul-medio);background:var(--azul-claro);
+    border-radius:999px;padding:5px 14px;margin-bottom:14px;
+  }
+  h2.cw-title{font-size:30px;font-weight:750;color:var(--azul-oscuro);margin:0 0 10px;line-height:1.2}
+  h3.cw-subtitle{font-size:20px;font-weight:750;color:var(--azul-oscuro);margin:44px 0 6px}
+  p.cw-lead{font-size:17px;color:var(--texto-muted);max-width:640px;margin:0 0 32px}
+  p.cw-copy{font-size:15px;color:var(--texto-muted);margin:0 0 16px;max-width:680px}
+
+  #cw-nav{
+    position:fixed;top:0;left:0;right:0;z-index:50;
+    background:rgba(246,248,251,.92);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--borde);
+  }
+  #cw-nav .cw-wrap{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:12px;padding-bottom:12px;max-width:980px;
+  }
+  #cw-nav .cw-brand{font-weight:750;color:var(--azul-oscuro);font-size:14px;white-space:nowrap}
+  #cw-nav .cw-brand span{color:var(--texto-muted);font-weight:600}
+  #cw-nav ol{list-style:none;display:flex;gap:20px;margin:0;padding:0}
+  #cw-nav a{display:flex;align-items:center;gap:7px;text-decoration:none;font-size:13px;font-weight:650;color:var(--texto-muted)}
+  #cw-nav .cw-dot{width:9px;height:9px;border-radius:999px;background:#c8d2df;transition:background .2s}
+  #cw-nav a.cw-active{color:var(--azul-oscuro)}
+  #cw-nav a.cw-active .cw-dot{background:var(--azul-medio)}
+  @media (max-width:760px){ #cw-nav ol{display:none} }
+
+  .cw-hero{padding:150px 0 60px;text-align:center}
+  .cw-hero .cw-eyebrow{margin-bottom:22px}
+  .cw-hero h1{font-size:44px;font-weight:750;color:var(--azul-oscuro);margin:0 0 14px;line-height:1.12;letter-spacing:-.01em}
+  .cw-hero p{font-size:18px;color:var(--texto-muted);max-width:600px;margin:0 auto 26px}
+  .cw-meta{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .cw-meta span{font-size:13px;font-weight:650;color:var(--azul-oscuro);background:#fff;border:1px solid var(--borde);border-radius:999px;padding:7px 16px}
+  .cw-hero .cw-nota{margin-top:26px;font-size:14px;color:var(--texto-muted);font-style:italic}
+
+  .cw-card{background:#fff;border:1px solid var(--borde);border-radius:var(--radio);padding:20px 22px;box-shadow:0 2px 10px rgba(23,32,51,.04)}
+  .cw-nota-azul{background:var(--fondo-1);border-left:4px solid var(--azul-medio);border-radius:10px;padding:14px 16px}
+  .cw-etiqueta{display:block;font-size:12px;letter-spacing:.05em;text-transform:uppercase;font-weight:750;color:var(--texto-muted);margin-bottom:6px}
+
+  /* ---------- roster grid ---------- */
+  .cw-roster-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:8px}
+  .cw-roster-card{
+    background:#fff;border:1px solid var(--borde);border-radius:12px;padding:16px 16px 14px;
+    display:flex;flex-direction:column;gap:8px;min-height:92px;justify-content:center;
+  }
+  .cw-roster-card .cw-r-icon{width:30px;height:30px;border-radius:9px;background:var(--azul-claro);display:flex;align-items:center;justify-content:center;color:var(--azul-medio);font-weight:750;font-size:13px}
+  .cw-roster-card .cw-r-name{font-size:14.5px;font-weight:700;color:var(--texto);line-height:1.3}
+  .cw-roster-card .cw-r-pending{font-size:11.5px;font-weight:700;color:var(--naranja);background:var(--naranja-claro);border-radius:999px;padding:3px 9px;display:inline-block;width:fit-content}
+  @media (max-width:700px){ .cw-roster-grid{grid-template-columns:repeat(2,1fr)} }
+  @media (max-width:460px){ .cw-roster-grid{grid-template-columns:1fr} }
+
+  /* ---------- rol y funciones ---------- */
+  .cw-definicion{font-size:17px;font-style:italic;color:var(--texto);background:var(--fondo-1);border-left:4px solid var(--azul-medio);border-radius:10px;padding:18px 20px;margin:8px 0 22px}
+  .cw-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 32px}
+  .cw-chip{font-size:13px;font-weight:650;color:var(--azul-oscuro);background:var(--azul-claro);border-radius:999px;padding:7px 14px}
+  .cw-func-cols{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
+  @media (max-width:760px){ .cw-func-cols{grid-template-columns:1fr} }
+  .cw-func-crisis{background:#fff;border:1.5px solid var(--rojo);border-radius:var(--radio);padding:20px 22px;box-shadow:0 4px 16px rgba(214,40,40,.08)}
+  .cw-func-crisis h4{margin:0 0 4px;font-size:16px;font-weight:750;color:var(--rojo)}
+  .cw-func-crisis .cw-func-sub{font-size:13px;color:var(--texto-muted);margin:0 0 14px}
+  .cw-func-crisis ol{margin:0;padding-left:20px}
+  .cw-func-crisis li{font-size:15px;margin-bottom:10px;color:var(--texto)}
+  .cw-func-nocrisis{background:var(--fondo-1);border-radius:var(--radio);padding:18px 20px}
+  .cw-func-nocrisis h4{margin:0 0 4px;font-size:14px;font-weight:750;color:var(--texto-muted);text-transform:uppercase;letter-spacing:.03em}
+  .cw-func-nocrisis .cw-func-sub{font-size:12.5px;color:var(--texto-muted);margin:0 0 12px}
+  .cw-func-nocrisis ol{margin:0;padding-left:18px}
+  .cw-func-nocrisis li{font-size:13.5px;margin-bottom:8px;color:var(--texto-muted);line-height:1.45}
+
+  /* ---------- SGCN cycle ---------- */
+  .cw-ciclo-wrap{display:flex;flex-wrap:wrap;gap:40px;align-items:center;margin-top:12px}
+  .cw-ciclo-svg{flex:0 0 auto;max-width:100%;height:auto}
+  .cw-lecciones{flex:1 1 260px;display:grid;gap:12px}
+  .cw-leccion{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid var(--borde);border-left:4px solid var(--verde);border-radius:12px;padding:12px 14px;font-size:15px}
+  .cw-leccion svg{flex:0 0 auto;margin-top:2px}
+
+  /* ---------- bridge question ---------- */
+  .cw-bridge{margin-top:40px;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);padding:22px 24px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .cw-bridge .cw-b-q{font-size:19px;font-weight:750;color:var(--azul-oscuro);margin:0}
+  .cw-bridge .cw-b-sub{font-size:14px;color:var(--texto-muted);margin:4px 0 0}
+
+  /* ---------- accordion (Parte A) ---------- */
+  .cw-accordion{display:grid;gap:12px;margin-top:8px}
+  details.cw-acc{background:#fff;border:1px solid var(--borde);border-radius:12px;overflow:hidden}
+  details.cw-acc[open]{box-shadow:0 4px 16px rgba(23,32,51,.06)}
+  details.cw-acc summary{
+    list-style:none;cursor:pointer;padding:18px 20px;display:flex;align-items:center;justify-content:space-between;gap:14px;
+  }
+  details.cw-acc summary::-webkit-details-marker{display:none}
+  .cw-acc-left{display:flex;align-items:center;gap:12px}
+  .cw-acc-num{width:32px;height:32px;border-radius:999px;background:var(--azul-claro);color:var(--azul-medio);font-weight:750;font-size:14px;display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+  .cw-acc-title{font-size:16.5px;font-weight:700;color:var(--texto)}
+  .cw-acc-time{font-size:12.5px;color:var(--texto-muted);font-weight:600}
+  .cw-acc-chevron{width:20px;height:20px;flex:0 0 auto;transition:transform .2s;color:var(--texto-muted)}
+  details.cw-acc[open] .cw-acc-chevron{transform:rotate(180deg)}
+  .cw-acc-body{padding:0 20px 22px}
+  .cw-acc-context{font-size:14.5px;color:var(--texto-muted);margin:0 0 16px;padding-top:2px;border-top:1px solid var(--borde);padding-top:14px}
+  .cw-acc-question{font-size:15px;font-weight:650;color:var(--texto);margin:0 0 14px}
+  .cw-acc-options{display:grid;gap:10px}
+  .cw-opt-row{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center}
+  .cw-opt-label{font-size:14px;font-weight:600;color:var(--texto)}
+  .cw-opt-count{font-size:13px;font-weight:750;color:var(--texto-muted);white-space:nowrap}
+  .cw-opt-bar-track{grid-column:1 / -1;height:10px;border-radius:999px;background:var(--fondo-1);overflow:hidden;display:flex}
+  .cw-opt-bar-fill{height:100%;border-radius:999px}
+  .cw-opt-bar-fill.cw-fill-a{background:var(--azul-medio)}
+  .cw-opt-bar-fill.cw-fill-b{background:var(--naranja)}
+
+  /* ---------- parte B viz blocks ---------- */
+  .cw-vizblock{margin-top:36px}
+  .cw-vizblock h3{font-size:19px;font-weight:750;color:var(--azul-oscuro);margin:0 0 4px}
+  .cw-vizblock p.cw-caption{font-size:14px;color:var(--texto-muted);margin:0 0 16px;max-width:640px}
+  #cw-cloud{width:100%;height:340px;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);display:block}
+
+  .cw-tabs{display:flex;gap:8px;margin-bottom:14px}
+  .cw-tab-btn{
+    font-family:inherit;font-size:13.5px;font-weight:700;border-radius:999px;padding:8px 16px;
+    border:1px solid var(--borde);background:#fff;color:var(--texto-muted);cursor:pointer;transition:.15s;
+  }
+  .cw-tab-btn.cw-tab-active{background:var(--azul-oscuro);border-color:var(--azul-oscuro);color:#fff}
+  .cw-relation-wrap{width:100%;height:520px;background:#fff;border:1px solid var(--borde);border-radius:var(--radio);position:relative}
+  .cw-relation-wrap svg{width:100%;height:100%;display:block}
+  .cw-legend{display:flex;gap:18px;margin-top:8px;font-size:12.5px;color:var(--texto-muted)}
+  .cw-legend i{display:inline-block;width:10px;height:10px;border-radius:999px;margin-right:5px;vertical-align:-1px}
+  .cw-legend .cw-i-noun{background:var(--azul-medio)}
+  .cw-legend .cw-i-adj{background:var(--adj)}
+  .cw-network-hint{font-size:13px;color:var(--texto-muted);margin-top:8px}
+  .cw-node-label{font-family:"Segoe UI",Arial,sans-serif;pointer-events:none;fill:var(--texto)}
+  .cw-link{stroke:#b9c7dc}
+
+  .cw-select-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+  select.cw-select{
+    font-family:inherit;font-size:14px;font-weight:650;color:var(--texto);background:#fff;
+    border:1px solid var(--borde);border-radius:10px;padding:10px 14px;min-width:280px;cursor:pointer;
+  }
+  .cw-select-count{font-size:13px;color:var(--texto-muted)}
+
+  /* ---------- cierre ---------- */
+  .cw-topic{background:#fff;border:1px solid var(--borde);border-radius:var(--radio);padding:24px 26px;margin-bottom:22px;box-shadow:0 2px 10px rgba(23,32,51,.04)}
+  .cw-topic-num{display:inline-flex;align-items:center;gap:8px;font-size:12.5px;font-weight:750;letter-spacing:.03em;text-transform:uppercase;color:var(--azul-medio);margin-bottom:8px}
+  .cw-topic h3{font-size:20px;font-weight:750;color:var(--azul-oscuro);margin:0 0 10px}
+  .cw-topic p.cw-copy{margin-bottom:18px}
+  .cw-mesa-svg{width:100%;max-width:720px;height:auto;display:block;margin:6px 0 18px}
+  .cw-question-box{background:var(--fondo-1);border-radius:12px;padding:16px 18px;display:flex;gap:12px;align-items:flex-start}
+  .cw-question-box svg{flex:0 0 auto;margin-top:2px}
+  .cw-question-box p{margin:0;font-size:14.5px;color:var(--texto);font-weight:600}
+  .cw-question-box small{display:block;margin-top:3px;font-weight:400;color:var(--texto-muted)}
+
+  footer{padding:40px 0 60px;text-align:center}
+  footer p{font-size:13px;color:var(--texto-muted);margin:0}
+
+  @media (max-width:640px){
+    .cw-hero h1{font-size:32px}
+    section{padding:64px 0 48px}
+    .cw-ciclo-wrap{flex-direction:column}
+  }
+</style>
+</head>
+<body>
+
+<nav id="cw-nav">
+  <div class="cw-wrap">
+    <div class="cw-brand">SGCN · <span>Coordinadores Especiales</span></div>
+    <ol>
+      <li><a href="#introduccion" class="cw-navlink" data-target="introduccion"><span class="cw-dot"></span>Introducción</a></li>
+      <li><a href="#parteA" class="cw-navlink" data-target="parteA"><span class="cw-dot"></span>Parte A</a></li>
+      <li><a href="#parteB" class="cw-navlink" data-target="parteB"><span class="cw-dot"></span>Parte B</a></li>
+      <li><a href="#cierre" class="cw-navlink" data-target="cierre"><span class="cw-dot"></span>Cierre</a></li>
+    </ol>
+  </div>
+</nav>
+
+<header class="cw-hero">
+  <div class="cw-wrap">
+    <span class="cw-eyebrow">Reunión de cierre</span>
+    <h1>Ejercicio Tabletop<br>Coordinadores Especiales</h1>
+    <p>Lectura conjunta del recorrido de continuidad del negocio: lo que eligieron en la simulación y cómo lo pusieron en palabras en el cuestionario.</p>
+    <div class="cw-meta">
+      <span>7 coordinadores especiales</span>
+      <span>5 decisiones simuladas</span>
+      <span>9 conceptos relevados</span>
+    </div>
+    <p class="cw-nota">Es una instancia de aprendizaje conjunto, no una evaluación individual.</p>
+  </div>
+</header>
+
+<main>
+
+  <!-- INTRODUCCIÓN -->
+  <section id="introduccion">
+    <div class="cw-wrap">
+      <span class="cw-eyebrow">01 · Introducción</span>
+      <h2 class="cw-title">Coordinadores Especiales</h2>
+      <p class="cw-lead">Nueve coordinaciones conforman este cuerpo, designadas por el CCCN. Hoy nos presentamos con nombre y apellido — acá repasamos las áreas que representan.</p>
+
+      <div class="cw-roster-grid" id="cw-roster"></div>
+
+      <h3 class="cw-subtitle">Rol y funciones de los Coordinadores Especiales</h3>
+      <p class="cw-definicion">"Los Coordinadores Especiales son actores clave en la continuidad de las operaciones del BNA. Durante una crisis, son quienes dan claridad en los momentos más críticos y guían las operaciones del banco hasta recuperar la operatoria normal, asegurando la confianza y seguridad de clientes y colegas."</p>
+
+      <div class="cw-func-cols">
+        <div class="cw-func-crisis">
+          <h4>Funciones en período de crisis</h4>
+          <p class="cw-func-sub">Una vez declarado un evento como "Crisis", esto es lo que tienen a cargo.</p>
+          <ol>
+            <li>Atender activamente las situaciones bajo su juicio experto y mantener informada a la unidad de Continuidad del Negocio sobre el estado de situación.</li>
+            <li>Garantizar el cumplimiento normativo — externo e interno — vinculado a su área de conocimiento.</li>
+            <li>Velar porque se documenten las modificaciones en los procedimientos habituales asociadas a la activación de la crisis.</li>
+            <li>Monitorear el desarrollo de la crisis y la respuesta de la entidad.</li>
+          </ol>
+        </div>
+        <div class="cw-func-nocrisis">
+          <h4>En período de no crisis</h4>
+          <p class="cw-func-sub">Funciones permanentes, fuera de un evento activo.</p>
+          <ol>
+            <li>Asesorar a las áreas del banco para la definición de planes y procedimientos.</li>
+            <li>Dar soporte de coordinación en pruebas de los planes y ejercicios.</li>
+            <li>Apoyar a los coordinadores departamentales en la elaboración de los PCN.</li>
+            <li>Impulsar la participación en programas de capacitación.</li>
+            <li>Brindar soporte a las áreas en la confección de los BIA.</li>
+            <li>Mantenerse actualizados sobre cambios normativos con impacto en CN.</li>
+            <li>Asesorar sobre la activación de una crisis y el retorno a la normalidad.</li>
+          </ol>
+        </div>
+      </div>
+
+      <h3 class="cw-subtitle">SGCN</h3>
+      <p class="cw-lead">El Sistema de Gestión de Continuidad del Negocio funciona como un ciclo continuo.</p>
+      <div class="cw-ciclo-wrap">
+        <svg class="cw-ciclo-svg" id="cw-ciclo" width="440" height="440" viewBox="0 0 440 440"></svg>
+        <div class="cw-lecciones">
+          <div class="cw-leccion">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#e8f7ee" stroke="#2a9d50"/><path d="M6 10l3 3 5-6" stroke="#2a9d50" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>El RTO empieza a correr desde el inicio del evento, no desde que se activa el Comité.</span>
+          </div>
+          <div class="cw-leccion">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#e8f7ee" stroke="#2a9d50"/><path d="M6 10l3 3 5-6" stroke="#2a9d50" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Activar el PCN no equivale necesariamente a declarar una crisis institucional.</span>
+          </div>
+          <div class="cw-leccion">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#e8f7ee" stroke="#2a9d50"/><path d="M6 10l3 3 5-6" stroke="#2a9d50" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Priorizar procesos críticos protege la operación mínima aceptable — no es abandonar el resto.</span>
+          </div>
+          <div class="cw-leccion">
+            <svg width="20" height="20" viewBox="0 0 20 20"><circle cx="10" cy="10" r="9" fill="#e8f7ee" stroke="#2a9d50"/><path d="M6 10l3 3 5-6" stroke="#2a9d50" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span>Comunicar de forma centralizada ordena la narrativa y evita versiones contradictorias.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cw-bridge">
+        <div style="flex:1 1 auto">
+          <p class="cw-b-q">¿Qué les parecieron las actividades?</p>
+          <p class="cw-b-sub">Antes de mostrar resultados, escuchemos — esta pregunta es el puente hacia lo que sigue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PARTE A -->
+  <section id="parteA">
+    <div class="cw-wrap">
+      <span class="cw-eyebrow">02 · Parte A</span>
+      <h2 class="cw-title">El manejo de la crisis: qué eligieron</h2>
+      <p class="cw-lead">Repaso del escenario interactivo — un corte de energía en Casa Central que se extiende a Plaza de Mayo y Florida, con un RTO de 2 horas para la operatoria alcanzada. Elegí un nodo para ver su detalle.</p>
+
+      <div class="cw-select-row">
+        <select class="cw-select" id="cw-node-select"></select>
+        <span class="cw-select-count" id="cw-node-time"></span>
+      </div>
+      <div class="cw-card" id="cw-node-card"></div>
+    </div>
+  </section>
+
+  <!-- PARTE B -->
+  <section id="parteB">
+    <div class="cw-wrap">
+      <span class="cw-eyebrow">03 · Parte B</span>
+      <h2 class="cw-title">Los conceptos: cómo los pusieron en palabras</h2>
+      <p class="cw-lead">Esto sale de las 9 respuestas abiertas del formulario — activación del comité, rol del coordinador, comunicación, coordinación entre áreas, priorización, resolución y cierre.</p>
+
+      <div class="cw-vizblock">
+        <h3>Qué conceptos aparecen más</h3>
+        <p class="cw-caption">Tamaño = cantidad de veces que se usó la palabra en el conjunto de respuestas.</p>
+        <svg id="cw-cloud"></svg>
+      </div>
+
+      <div class="cw-vizblock">
+        <h3>Cómo se relacionan entre sí</h3>
+        <p class="cw-caption">Conceptos: qué palabras aparecen juntas en una misma respuesta. Adjetivos: qué calificativo usaron para describir cada concepto — "la comunicación fue <em>clara</em>", "un sitio <em>alternativo</em>".</p>
+        <div class="cw-tabs">
+          <button class="cw-tab-btn cw-tab-active" id="cw-tab-concepts">Conceptos</button>
+          <button class="cw-tab-btn" id="cw-tab-adjectives">Adjetivos</button>
+        </div>
+        <div class="cw-relation-wrap"><svg id="cw-relation"></svg></div>
+        <div class="cw-legend" id="cw-relation-legend">
+          <span><i class="cw-i-noun"></i>Concepto</span>
+        </div>
+        <p class="cw-network-hint">Los nodos se pueden arrastrar. Pasá el cursor por uno para ver sus conexiones.</p>
+      </div>
+
+      <div class="cw-vizblock">
+        <h3>Por pregunta del formulario</h3>
+        <p class="cw-caption">Conceptos y adjetivos vinculados a una pregunta puntual, sin identificar participantes. Elegí una pregunta para ver su propia red.</p>
+        <div class="cw-select-row">
+          <select class="cw-select" id="cw-question-select"></select>
+          <span class="cw-select-count" id="cw-question-count"></span>
+        </div>
+        <div class="cw-relation-wrap"><svg id="cw-question-net"></svg></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CIERRE -->
+  <section id="cierre">
+    <div class="cw-wrap">
+      <span class="cw-eyebrow">04 · Cierre</span>
+      <h2 class="cw-title">Temas para conversar</h2>
+      <p class="cw-lead">No son ejercicios de simulación — son espacios abiertos para dudas, conceptos que quieran compartir, o propuestas de mejora. Estos son los puntos de partida; seguramente surjan otros en la conversación.</p>
+
+      <div class="cw-topic">
+        <div class="cw-topic-num">Tema 1</div>
+        <h3>Mesa Intermediaria</h3>
+        <p class="cw-copy">Los Coordinadores Especiales no reemplazan al Comité de Crisis y Continuidad del Negocio (CCCN) — funcionan como una mesa consultiva previa: asesoran sobre la activación de una crisis y sobre la vuelta a la normalidad. La UO Gestión de la Continuidad del Negocio coordina ese vínculo.</p>
+        <svg class="cw-mesa-svg" id="cw-mesa" viewBox="0 0 720 220"></svg>
+        <p style="font-size:12.5px;color:var(--texto-muted);margin:2px 0 0">* Representan la continuidad de sus áreas dentro de este esquema.</p>
+        <div class="cw-question-box">
+          <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#eaf2ff" stroke="#1f6ecf"/><text x="11" y="15.5" text-anchor="middle" font-size="12" font-weight="750" fill="#1f6ecf">?</text></svg>
+          <p>¿Dudas, conceptos que quieran compartir, o propuestas sobre este esquema?<small>Pensemos juntos cómo funciona en la práctica esta mesa intermedia.</small></p>
+        </div>
+      </div>
+
+      <div class="cw-topic">
+        <div class="cw-topic-num">Tema 2</div>
+        <h3>Comunicación en crisis</h3>
+        <p class="cw-copy">Quién habla, con qué canal y en qué momento — antes de que la narrativa se arme sola en canales informales.</p>
+        <div class="cw-question-box">
+          <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#eaf2ff" stroke="#1f6ecf"/><text x="11" y="15.5" text-anchor="middle" font-size="12" font-weight="750" fill="#1f6ecf">?</text></svg>
+          <p>¿Dudas, conceptos que quieran compartir, o propuestas sobre comunicación en crisis?<small>Pensemos en su propio rol como voceros de su área.</small></p>
+        </div>
+      </div>
+
+      <div class="cw-topic">
+        <div class="cw-topic-num">Tema 3</div>
+        <h3>Criterios de activación</h3>
+        <p class="cw-copy">Qué señales ameritan escalar a un Comité de Crisis, y cuáles se resuelven dentro del propio PCN de la operatoria.</p>
+        <div class="cw-question-box">
+          <svg width="22" height="22" viewBox="0 0 22 22"><circle cx="11" cy="11" r="10" fill="#eaf2ff" stroke="#1f6ecf"/><text x="11" y="15.5" text-anchor="middle" font-size="12" font-weight="750" fill="#1f6ecf">?</text></svg>
+          <p>¿Dudas, conceptos que quieran compartir, o propuestas sobre los criterios de activación?<small>¿Hay señales de su área que no estén contempladas hoy?</small></p>
+        </div>
+      </div>
+
+      <div class="cw-topic" style="border-style:dashed;box-shadow:none;text-align:center">
+        <p class="cw-copy" style="margin:0">Y lo que surja — este espacio queda abierto a cualquier otro tema que quieran traer.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="cw-wrap">
+    <p>Sistema de Gestión de Continuidad del Negocio (SGCN) · Banco de la Nación Argentina</p>
+    <p>Documento de apoyo para la reunión de cierre — no reemplaza al PCN vigente.</p>
+  </div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script>
+/* ============================================================
+   DATA
+   ============================================================ */
+const ROSTER = [
+  {area:"Coordinador de RRHH y Comunicación Interna"},
+  {area:"Coordinador de Comunicación Institucional"},
+  {area:"Coordinador de Tecnología y Sistemas"},
+  {area:"Coordinador de Seguridad de la Información"},
+  {area:"Coordinador de Procesamiento y Aplicaciones"},
+  {area:"Coordinador de Seguridad Física e Infraestructura Edilicia"},
+  {area:"Coordinador de Operaciones"},
+  {area:"Coordinador de Red de Sucursales"},
+  {area:"Coordinador Comercial"},
+];
+
+const NODES_A = [
+  {
+    id:"n1", title:"Nodo 1 — Primeros minutos", time:"11:00 – 11:15",
+    context:"Corte de energía en Casa Central que se extiende a Plaza de Mayo y Florida. El proveedor eléctrico no da tiempo estimado de normalización.",
+    question:"¿Qué acciones tomarías en este escenario?",
+    a:{code:"CP", label:"Emitir alerta preventiva a equipos propios y elevar por línea de reporte", count:7},
+    b:{code:"EI", label:"Solicitar orientación a Continuidad del Negocio y aguardar instrucciones formales", count:0},
+  },
+  {
+    id:"n2", title:"Nodo 2 — Primer análisis", time:"11:20",
+    context:"Pasaron 20 minutos desde el inicio del evento. Todavía no existe claridad sobre magnitud, duración ni impacto final.",
+    question:"¿Qué acciones tomarías en este escenario?",
+    a:{code:"PCN", label:"Activar el PCN de la operatoria y mantener seguimiento", count:6},
+    b:{code:"CCN", label:"Solicitar la activación preventiva del Comité de Crisis y Continuidad del Negocio", count:1},
+  },
+  {
+    id:"n3", title:"Nodo 3 — Escalada del evento", time:"11:45",
+    context:"El proveedor eléctrico avisa que la interrupción podría extenderse 4 horas más. La afectación ya involucra varias sedes.",
+    question:"¿Qué pasos considerás más adecuados para continuar con la gestión de la situación?",
+    a:{code:"AI", label:"Formalizar la escalada institucional y activar el Comité de Crisis y Continuidad del Negocio", count:7},
+    b:{code:"GD", label:"Mantener la gestión descentralizada desde cada área afectada", count:0},
+  },
+  {
+    id:"n4", title:"Nodo 4 — Priorización", time:"11:50 – 12:05",
+    context:"La capacidad de respuesta es limitada: no todos los servicios pueden sostenerse con la misma intensidad.",
+    question:"Frente al evento, la entidad deberá evaluar el curso de acción considerando la capacidad de respuesta disponible. ¿Qué debería priorizar?",
+    a:{code:"PC", label:"Priorizar los procesos y servicios críticos definidos", count:7},
+    b:{code:"ST", label:"Asignar recursos para sostener todas las operaciones sin priorización", count:0},
+  },
+  {
+    id:"n5", title:"Nodo 5 — Gestión reputacional", time:"12:20",
+    context:"Aumentan las consultas de clientes, proveedores y medios. Circulan versiones parciales en canales informales.",
+    question:"¿Cómo debería responder la institución?",
+    a:{code:"CC", label:"Emitir una comunicación pública breve, validada y centralizada", count:5},
+    b:{code:"EC", label:"Esperar mayor claridad técnica antes de comunicar externamente", count:2},
+  },
+];
+
+const CLOUD_WORDS = [{"text":"comunicación","count":58},{"text":"impacto","count":34},{"text":"información","count":33},{"text":"comité","count":28},{"text":"crisis","count":26},{"text":"continuidad","count":25},{"text":"negocio","count":23},{"text":"áreas","count":23},{"text":"situación","count":18},{"text":"acciones","count":18},{"text":"clientes","count":17},{"text":"tiempo","count":16},{"text":"entidad","count":16},{"text":"institucional","count":15},{"text":"área","count":15},{"text":"activación","count":14},{"text":"decisión","count":13},{"text":"recuperación","count":13},{"text":"procesos","count":13},{"text":"seguridad","count":13},{"text":"críticos","count":12},{"text":"decisiones","count":12},{"text":"general","count":12},{"text":"operatoria","count":12},{"text":"servicios","count":12},{"text":"afectados","count":12},{"text":"escenario","count":11},{"text":"fines","count":11},{"text":"canales","count":11},{"text":"recursos","count":11},{"text":"incidente","count":10},{"text":"operación","count":10},{"text":"evento","count":10},{"text":"responsables","count":10},{"text":"legales","count":10},{"text":"activar","count":9},{"text":"riesgo","count":9},{"text":"comunicar","count":9},{"text":"operaciones","count":9},{"text":"sucursales","count":9}];
+
+const CONCEPT_NODES = [{"id":"comunicación","freq":58},{"id":"impacto","freq":34},{"id":"información","freq":33},{"id":"comité","freq":28},{"id":"crisis","freq":26},{"id":"continuidad","freq":25},{"id":"negocio","freq":23},{"id":"áreas","freq":23},{"id":"situación","freq":18},{"id":"acciones","freq":18},{"id":"clientes","freq":17},{"id":"tiempo","freq":16},{"id":"entidad","freq":16},{"id":"institucional","freq":15},{"id":"área","freq":15},{"id":"activación","freq":14},{"id":"decisión","freq":13},{"id":"recuperación","freq":13},{"id":"procesos","freq":13},{"id":"críticos","freq":12},{"id":"decisiones","freq":12}];
+const CONCEPT_EDGES = [{"source":"activación","target":"impacto","weight":10},{"source":"clientes","target":"comité","weight":9},{"source":"clientes","target":"crisis","weight":11},{"source":"clientes","target":"impacto","weight":9},{"source":"clientes","target":"institucional","weight":8},{"source":"clientes","target":"negocio","weight":8},{"source":"clientes","target":"áreas","weight":8},{"source":"comité","target":"continuidad","weight":9},{"source":"comité","target":"crisis","weight":16},{"source":"comité","target":"decisión","weight":8},{"source":"comité","target":"impacto","weight":10},{"source":"comité","target":"institucional","weight":11},{"source":"comité","target":"negocio","weight":9},{"source":"comité","target":"áreas","weight":12},{"source":"continuidad","target":"crisis","weight":8},{"source":"continuidad","target":"críticos","weight":11},{"source":"continuidad","target":"impacto","weight":11},{"source":"continuidad","target":"negocio","weight":10},{"source":"continuidad","target":"procesos","weight":8},{"source":"continuidad","target":"áreas","weight":8},{"source":"crisis","target":"decisión","weight":8},{"source":"crisis","target":"entidad","weight":9},{"source":"crisis","target":"impacto","weight":10},{"source":"crisis","target":"institucional","weight":10},{"source":"crisis","target":"negocio","weight":10},{"source":"crisis","target":"áreas","weight":11},{"source":"críticos","target":"impacto","weight":8},{"source":"críticos","target":"procesos","weight":8},{"source":"decisiones","target":"impacto","weight":8},{"source":"impacto","target":"negocio","weight":12},{"source":"impacto","target":"procesos","weight":9},{"source":"impacto","target":"recuperación","weight":9},{"source":"impacto","target":"áreas","weight":9},{"source":"institucional","target":"áreas","weight":8},{"source":"negocio","target":"tiempo","weight":8},{"source":"negocio","target":"áreas","weight":9},{"source":"clientes","target":"comunicación","weight":9},{"source":"impacto","target":"situación","weight":8},{"source":"acciones","target":"comunicación","weight":10},{"source":"acciones","target":"impacto","weight":12},{"source":"comunicación","target":"crisis","weight":12},{"source":"comunicación","target":"entidad","weight":9},{"source":"comunicación","target":"impacto","weight":12},{"source":"comunicación","target":"negocio","weight":10},{"source":"acciones","target":"información","weight":8},{"source":"continuidad","target":"información","weight":9},{"source":"comunicación","target":"situación","weight":11},{"source":"comunicación","target":"información","weight":15},{"source":"comunicación","target":"continuidad","weight":11},{"source":"comunicación","target":"críticos","weight":8},{"source":"comunicación","target":"procesos","weight":9},{"source":"comunicación","target":"áreas","weight":13},{"source":"información","target":"situación","weight":8},{"source":"información","target":"áreas","weight":8},{"source":"entidad","target":"información","weight":9},{"source":"comité","target":"información","weight":9},{"source":"crisis","target":"información","weight":9},{"source":"comité","target":"comunicación","weight":14},{"source":"comunicación","target":"institucional","weight":10},{"source":"comunicación","target":"área","weight":10}];
+
+const ADJ_NODES = [{"id":"proceso","freq":12,"type":"noun"},{"id":"crítico","freq":14,"type":"adj"},{"id":"impacto","freq":12,"type":"noun"},{"id":"económico","freq":3,"type":"adj"},{"id":"autoridad","freq":8,"type":"noun"},{"id":"designado","freq":2,"type":"adj"},{"id":"decisión","freq":2,"type":"noun"},{"id":"coordinado","freq":2,"type":"adj"},{"id":"cliente","freq":7,"type":"noun"},{"id":"externo","freq":4,"type":"adj"},{"id":"área","freq":12,"type":"noun"},{"id":"involucrado","freq":4,"type":"adj"},{"id":"operativo","freq":4,"type":"adj"},{"id":"afectado","freq":7,"type":"adj"},{"id":"sitio","freq":7,"type":"noun"},{"id":"alternativo","freq":5,"type":"adj"},{"id":"trabajo","freq":5,"type":"noun"},{"id":"remoto","freq":5,"type":"adj"},{"id":"comunicación","freq":9,"type":"noun"},{"id":"interno","freq":6,"type":"adj"},{"id":"oficial","freq":7,"type":"adj"},{"id":"fuente","freq":3,"type":"noun"},{"id":"confiable","freq":3,"type":"adj"},{"id":"información","freq":8,"type":"noun"},{"id":"disponible","freq":3,"type":"adj"},{"id":"operatoria","freq":2,"type":"noun"},{"id":"diario","freq":2,"type":"adj"},{"id":"confirmado","freq":3,"type":"adj"},{"id":"máximo","freq":2,"type":"adj"},{"id":"canal","freq":3,"type":"noun"},{"id":"gerencia","freq":2,"type":"noun"},{"id":"alto","freq":4,"type":"adj"},{"id":"reputacional","freq":3,"type":"adj"},{"id":"competente","freq":2,"type":"adj"},{"id":"imprescindible","freq":2,"type":"adj"},{"id":"regulatorio","freq":2,"type":"adj"},{"id":"inicial","freq":2,"type":"adj"},{"id":"regulatoria","freq":4,"type":"adj"},{"id":"proveedor","freq":2,"type":"noun"},{"id":"técnico","freq":3,"type":"adj"},{"id":"responsable","freq":3,"type":"adj"},{"id":"dirección","freq":2,"type":"noun"},{"id":"mensaje","freq":2,"type":"noun"},{"id":"único","freq":2,"type":"adj"},{"id":"alterno","freq":2,"type":"adj"},{"id":"servicio","freq":3,"type":"noun"},{"id":"riesgo","freq":2,"type":"noun"},{"id":"legal","freq":2,"type":"adj"},{"id":"obligación","freq":2,"type":"noun"},{"id":"ataque","freq":2,"type":"noun"}];
+const ADJ_EDGES = [{"source":"proceso","target":"crítico","weight":9},{"source":"impacto","target":"económico","weight":3},{"source":"autoridad","target":"designado","weight":2},{"source":"decisión","target":"coordinado","weight":2},{"source":"cliente","target":"externo","weight":2},{"source":"área","target":"involucrado","weight":4},{"source":"impacto","target":"operativo","weight":4},{"source":"proceso","target":"afectado","weight":3},{"source":"sitio","target":"alternativo","weight":5},{"source":"trabajo","target":"remoto","weight":5},{"source":"comunicación","target":"interno","weight":3},{"source":"comunicación","target":"oficial","weight":4},{"source":"fuente","target":"confiable","weight":3},{"source":"información","target":"disponible","weight":3},{"source":"operatoria","target":"diario","weight":2},{"source":"información","target":"confirmado","weight":3},{"source":"autoridad","target":"máximo","weight":2},{"source":"área","target":"afectado","weight":2},{"source":"canal","target":"oficial","weight":3},{"source":"gerencia","target":"alto","weight":2},{"source":"impacto","target":"reputacional","weight":3},{"source":"autoridad","target":"competente","weight":2},{"source":"información","target":"imprescindible","weight":2},{"source":"impacto","target":"regulatorio","weight":2},{"source":"comunicación","target":"inicial","weight":2},{"source":"cliente","target":"afectado","weight":2},{"source":"autoridad","target":"regulatoria","weight":2},{"source":"proveedor","target":"crítico","weight":2},{"source":"área","target":"técnico","weight":3},{"source":"área","target":"responsable","weight":3},{"source":"cliente","target":"interno","weight":3},{"source":"dirección","target":"alto","weight":2},{"source":"mensaje","target":"único","weight":2},{"source":"sitio","target":"alterno","weight":2},{"source":"servicio","target":"crítico","weight":3},{"source":"riesgo","target":"legal","weight":2},{"source":"obligación","target":"regulatoria","weight":2},{"source":"ataque","target":"externo","weight":2}];
+
+const PER_Q = {"Activación del CCCN": {"nodes": [{"id": "gravedad", "type": "noun"}, {"id": "técnico", "type": "adj"}, {"id": "impacto", "type": "noun"}, {"id": "potencial", "type": "adj"}, {"id": "reputación", "type": "noun"}, {"id": "institucional", "type": "adj"}, {"id": "disparador", "type": "noun"}, {"id": "principal", "type": "adj"}, {"id": "proceso", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "definido", "type": "adj"}, {"id": "compromiso", "type": "noun"}, {"id": "regulatorio", "type": "adj"}, {"id": "económico", "type": "adj"}, {"id": "significativo", "type": "adj"}, {"id": "riesgo", "type": "noun"}, {"id": "financiero", "type": "adj"}], "edges": [{"source": "gravedad", "target": "técnico", "weight": 1}, {"source": "impacto", "target": "potencial", "weight": 1}, {"source": "reputación", "target": "institucional", "weight": 1}, {"source": "disparador", "target": "principal", "weight": 1}, {"source": "proceso", "target": "crítico", "weight": 1}, {"source": "proceso", "target": "definido", "weight": 1}, {"source": "compromiso", "target": "regulatorio", "weight": 1}, {"source": "impacto", "target": "económico", "weight": 1}, {"source": "impacto", "target": "significativo", "weight": 1}, {"source": "riesgo", "target": "financiero", "weight": 1}]}, "Rol del coordinador": {"nodes": [{"id": "sitio", "type": "noun"}, {"id": "alternativo", "type": "adj"}, {"id": "impacto", "type": "noun"}, {"id": "operativo", "type": "adj"}, {"id": "proceso", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "panorama", "type": "noun"}, {"id": "consolidado", "type": "adj"}, {"id": "afectado", "type": "adj"}, {"id": "persona", "type": "noun"}, {"id": "involucrado", "type": "adj"}, {"id": "infraestructura", "type": "noun"}, {"id": "disponible", "type": "adj"}, {"id": "estimación", "type": "noun"}, {"id": "preliminar", "type": "adj"}, {"id": "activación", "type": "noun"}, {"id": "eventual", "type": "adj"}, {"id": "estrategia", "type": "noun"}, {"id": "previsto", "type": "adj"}], "edges": [{"source": "sitio", "target": "alternativo", "weight": 3}, {"source": "impacto", "target": "operativo", "weight": 2}, {"source": "proceso", "target": "crítico", "weight": 2}, {"source": "panorama", "target": "consolidado", "weight": 1}, {"source": "proceso", "target": "afectado", "weight": 1}, {"source": "persona", "target": "involucrado", "weight": 1}, {"source": "infraestructura", "target": "disponible", "weight": 1}, {"source": "estimación", "target": "preliminar", "weight": 1}, {"source": "activación", "target": "eventual", "weight": 1}, {"source": "estrategia", "target": "previsto", "weight": 1}]}, "Gestión de la información": {"nodes": [{"id": "comunicación", "type": "noun"}, {"id": "oficial", "type": "adj"}, {"id": "fuente", "type": "noun"}, {"id": "confiable", "type": "adj"}, {"id": "proceso", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "trabajo", "type": "noun"}, {"id": "remoto", "type": "adj"}, {"id": "información", "type": "noun"}, {"id": "disponible", "type": "adj"}, {"id": "interno", "type": "adj"}, {"id": "proveniente", "type": "adj"}, {"id": "organismo", "type": "noun"}, {"id": "afectado", "type": "adj"}, {"id": "infraestructura", "type": "noun"}, {"id": "tecnológico", "type": "adj"}], "edges": [{"source": "comunicación", "target": "oficial", "weight": 3}, {"source": "fuente", "target": "confiable", "weight": 3}, {"source": "proceso", "target": "crítico", "weight": 3}, {"source": "trabajo", "target": "remoto", "weight": 3}, {"source": "información", "target": "disponible", "weight": 3}, {"source": "comunicación", "target": "interno", "weight": 2}, {"source": "información", "target": "proveniente", "weight": 1}, {"source": "organismo", "target": "oficial", "weight": 1}, {"source": "proceso", "target": "afectado", "weight": 1}, {"source": "infraestructura", "target": "tecnológico", "weight": 1}]}, "Comunicación inicial (Crisis)": {"nodes": [{"id": "información", "type": "noun"}, {"id": "confirmado", "type": "adj"}, {"id": "autoridad", "type": "noun"}, {"id": "máximo", "type": "adj"}, {"id": "procedimiento", "type": "noun"}, {"id": "correspondiente", "type": "adj"}, {"id": "oficial", "type": "adj"}, {"id": "canal", "type": "noun"}, {"id": "institucional", "type": "adj"}, {"id": "organismo", "type": "noun"}, {"id": "regulador", "type": "adj"}, {"id": "proveedor", "type": "noun"}, {"id": "involucrado", "type": "adj"}, {"id": "designado", "type": "adj"}, {"id": "área", "type": "noun"}, {"id": "afectado", "type": "adj"}, {"id": "medida", "type": "noun"}, {"id": "adoptado", "type": "adj"}], "edges": [{"source": "información", "target": "confirmado", "weight": 3}, {"source": "autoridad", "target": "máximo", "weight": 2}, {"source": "procedimiento", "target": "correspondiente", "weight": 1}, {"source": "información", "target": "oficial", "weight": 1}, {"source": "canal", "target": "institucional", "weight": 1}, {"source": "organismo", "target": "regulador", "weight": 1}, {"source": "proveedor", "target": "involucrado", "weight": 1}, {"source": "autoridad", "target": "designado", "weight": 1}, {"source": "área", "target": "afectado", "weight": 1}, {"source": "medida", "target": "adoptado", "weight": 1}]}, "Comunicación Inicial (Disrupción)": {"nodes": [{"id": "área", "type": "noun"}, {"id": "técnico", "type": "adj"}, {"id": "impacto", "type": "noun"}, {"id": "operativo", "type": "adj"}, {"id": "comunicación", "type": "noun"}, {"id": "inicial", "type": "adj"}, {"id": "cliente", "type": "noun"}, {"id": "afectado", "type": "adj"}, {"id": "interno", "type": "adj"}, {"id": "regulatorio", "type": "adj"}, {"id": "descripción", "type": "noun"}, {"id": "general", "type": "adj"}, {"id": "proceso", "type": "noun"}, {"id": "servicio", "type": "noun"}, {"id": "disponible", "type": "adj"}, {"id": "canal", "type": "noun"}, {"id": "alternativo", "type": "adj"}], "edges": [{"source": "área", "target": "técnico", "weight": 3}, {"source": "impacto", "target": "operativo", "weight": 2}, {"source": "comunicación", "target": "inicial", "weight": 2}, {"source": "cliente", "target": "afectado", "weight": 2}, {"source": "cliente", "target": "interno", "weight": 2}, {"source": "impacto", "target": "regulatorio", "weight": 1}, {"source": "descripción", "target": "general", "weight": 1}, {"source": "proceso", "target": "afectado", "weight": 1}, {"source": "servicio", "target": "disponible", "weight": 1}, {"source": "canal", "target": "alternativo", "weight": 1}]}, "Coordinación entre áreas": {"nodes": [{"id": "sitio", "type": "noun"}, {"id": "alternativo", "type": "adj"}, {"id": "mensaje", "type": "noun"}, {"id": "único", "type": "adj"}, {"id": "área", "type": "noun"}, {"id": "responsable", "type": "adj"}, {"id": "alterno", "type": "adj"}, {"id": "impacto", "type": "noun"}, {"id": "regulatorio", "type": "adj"}, {"id": "económico", "type": "adj"}, {"id": "recurso", "type": "noun"}, {"id": "necesario", "type": "adj"}, {"id": "criterio", "type": "noun"}, {"id": "jerárquico", "type": "adj"}, {"id": "institucional", "type": "adj"}, {"id": "emitido", "type": "adj"}], "edges": [{"source": "sitio", "target": "alternativo", "weight": 2}, {"source": "mensaje", "target": "único", "weight": 2}, {"source": "área", "target": "responsable", "weight": 2}, {"source": "sitio", "target": "alterno", "weight": 2}, {"source": "impacto", "target": "regulatorio", "weight": 1}, {"source": "impacto", "target": "económico", "weight": 1}, {"source": "recurso", "target": "necesario", "weight": 1}, {"source": "criterio", "target": "jerárquico", "weight": 1}, {"source": "mensaje", "target": "institucional", "weight": 1}, {"source": "mensaje", "target": "emitido", "weight": 1}]}, "Priorización": {"nodes": [{"id": "proceso", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "acción", "type": "noun"}, {"id": "alternativo", "type": "adj"}, {"id": "análisis", "type": "noun"}, {"id": "técnico", "type": "adj"}, {"id": "complejidad", "type": "noun"}, {"id": "diagnóstico", "type": "noun"}, {"id": "rápido", "type": "adj"}, {"id": "dato", "type": "noun"}, {"id": "confirmado", "type": "adj"}, {"id": "urgencia", "type": "noun"}, {"id": "solicitado", "type": "adj"}, {"id": "margen", "type": "noun"}, {"id": "leve", "type": "adj"}, {"id": "presión", "type": "noun"}, {"id": "externo", "type": "adj"}, {"id": "lapso", "type": "noun"}, {"id": "breve", "type": "adj"}], "edges": [{"source": "proceso", "target": "crítico", "weight": 2}, {"source": "acción", "target": "alternativo", "weight": 1}, {"source": "análisis", "target": "técnico", "weight": 1}, {"source": "complejidad", "target": "técnico", "weight": 1}, {"source": "diagnóstico", "target": "rápido", "weight": 1}, {"source": "dato", "target": "confirmado", "weight": 1}, {"source": "urgencia", "target": "solicitado", "weight": 1}, {"source": "margen", "target": "leve", "weight": 1}, {"source": "presión", "target": "externo", "weight": 1}, {"source": "lapso", "target": "breve", "weight": 1}]}, "Resolución": {"nodes": [{"id": "riesgo", "type": "noun"}, {"id": "legal", "type": "adj"}, {"id": "obligación", "type": "noun"}, {"id": "regulatoria", "type": "adj"}, {"id": "servicio", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "exfiltración", "type": "noun"}, {"id": "posible", "type": "adj"}, {"id": "infraestructura", "type": "noun"}, {"id": "comprometido", "type": "adj"}, {"id": "autoridad", "type": "noun"}, {"id": "correspondo", "type": "adj"}, {"id": "canal", "type": "noun"}, {"id": "oficial", "type": "adj"}, {"id": "pago", "type": "noun"}, {"id": "eventual", "type": "adj"}, {"id": "decisión", "type": "noun"}, {"id": "automático", "type": "adj"}], "edges": [{"source": "riesgo", "target": "legal", "weight": 2}, {"source": "obligación", "target": "regulatoria", "weight": 2}, {"source": "servicio", "target": "crítico", "weight": 2}, {"source": "exfiltración", "target": "posible", "weight": 1}, {"source": "infraestructura", "target": "comprometido", "weight": 1}, {"source": "autoridad", "target": "regulatoria", "weight": 1}, {"source": "autoridad", "target": "correspondo", "weight": 1}, {"source": "canal", "target": "oficial", "weight": 1}, {"source": "pago", "target": "eventual", "weight": 1}, {"source": "decisión", "target": "automático", "weight": 1}]}, "Cierre y aprendizaje": {"nodes": [{"id": "análisis", "type": "noun"}, {"id": "posterior", "type": "adj"}, {"id": "proceso", "type": "noun"}, {"id": "formal", "type": "adj"}, {"id": "proveedor", "type": "noun"}, {"id": "crítico", "type": "adj"}, {"id": "cliente", "type": "noun"}, {"id": "interno", "type": "adj"}, {"id": "contingencia", "type": "noun"}, {"id": "inevitable", "type": "adj"}, {"id": "impacto", "type": "noun"}, {"id": "agravado", "type": "adj"}, {"id": "programa", "type": "noun"}, {"id": "anual", "type": "adj"}, {"id": "resiliencia", "type": "noun"}, {"id": "institucional", "type": "adj"}, {"id": "escenario", "type": "noun"}, {"id": "experiencia", "type": "adj"}, {"id": "dificultad", "type": "noun"}, {"id": "operativo", "type": "adj"}], "edges": [{"source": "análisis", "target": "posterior", "weight": 1}, {"source": "proceso", "target": "formal", "weight": 1}, {"source": "proveedor", "target": "crítico", "weight": 1}, {"source": "cliente", "target": "interno", "weight": 1}, {"source": "contingencia", "target": "inevitable", "weight": 1}, {"source": "impacto", "target": "agravado", "weight": 1}, {"source": "programa", "target": "anual", "weight": 1}, {"source": "resiliencia", "target": "institucional", "weight": 1}, {"source": "escenario", "target": "experiencia", "weight": 1}, {"source": "dificultad", "target": "operativo", "weight": 1}]}};
+
+/* ============================================================
+   NAV SCROLLSPY
+   ============================================================ */
+const navLinks = document.querySelectorAll(".cw-navlink");
+const sections = [...navLinks].map(l => document.getElementById(l.dataset.target));
+const spy = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      navLinks.forEach(l => l.classList.remove("cw-active"));
+      const link = document.querySelector(`.cw-navlink[data-target="${e.target.id}"]`);
+      if(link) link.classList.add("cw-active");
+    }
+  });
+}, {rootMargin:"-45% 0px -50% 0px"});
+sections.forEach(s => s && spy.observe(s));
+
+/* ============================================================
+   ROSTER
+   ============================================================ */
+const rosterEl = document.getElementById("cw-roster");
+ROSTER.forEach(r => {
+  const card = document.createElement("div");
+  card.className = "cw-roster-card";
+  const initials = r.area.replace("Coordinador de ","").replace("Coordinador ","").split(" ").filter(w=>w.length>2).slice(0,2).map(w=>w[0]).join("").toUpperCase();
+  card.innerHTML = `
+    <div class="cw-r-icon">${initials}</div>
+    <div class="cw-r-name">${r.area}</div>
+  `;
+  rosterEl.appendChild(card);
+});
+
+/* ============================================================
+   PARTE A — node selector + card (percentages)
+   ============================================================ */
+const nodeSelect = document.getElementById("cw-node-select");
+const nodeTime = document.getElementById("cw-node-time");
+const nodeCard = document.getElementById("cw-node-card");
+
+NODES_A.forEach((n,i) => {
+  const opt = document.createElement("option");
+  opt.value = n.id; opt.textContent = n.title;
+  nodeSelect.appendChild(opt);
+});
+
+function pct(count, total){ return total ? Math.round(count/total*100) : 0; }
+
+function drawNode(){
+  const n = NODES_A.find(x => x.id === nodeSelect.value);
+  const total = n.a.count + n.b.count;
+  const pa = pct(n.a.count, total);
+  const pb = pct(n.b.count, total);
+  nodeTime.textContent = n.time;
+  nodeCard.innerHTML = `
+    <p class="cw-acc-context" style="border-top:none;padding-top:0">${n.context}</p>
+    <p class="cw-acc-question">${n.question}</p>
+    <div class="cw-acc-options">
+      <div class="cw-opt-row">
+        <span class="cw-opt-label">${n.a.label}</span>
+        <span class="cw-opt-count">${pa}%</span>
+      </div>
+      <div class="cw-opt-bar-track">
+        <div class="cw-opt-bar-fill cw-fill-a" style="width:${pa}%"></div>
+        <div class="cw-opt-bar-fill cw-fill-b" style="width:${pb}%"></div>
+      </div>
+      <div class="cw-opt-row">
+        <span class="cw-opt-label">${n.b.label}</span>
+        <span class="cw-opt-count">${pb}%</span>
+      </div>
+    </div>`;
+}
+nodeSelect.addEventListener("change", drawNode);
+nodeSelect.value = NODES_A[0].id;
+drawNode();
+
+/* ============================================================
+   PARTE B — word cloud (spiral placement, no deps)
+   ============================================================ */
+(function(){
+  const svgEl = document.getElementById("cw-cloud");
+  const W = svgEl.parentElement.clientWidth || 900, H = 340;
+  const svg = d3.select("#cw-cloud").attr("viewBox",`0 0 ${W} ${H}`);
+  const palette = ["#003366","#1f6ecf","#2a9d50","#526071","#9a5b00"];
+
+  const maxC = d3.max(CLOUD_WORDS, d=>d.count);
+  const minC = d3.min(CLOUD_WORDS, d=>d.count);
+  const fs = d3.scaleSqrt().domain([minC,maxC]).range([13,52]);
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const placed = [];
+  function overlaps(box){
+    return placed.some(p => !(box.x2 < p.x1 || box.x1 > p.x2 || box.y2 < p.y1 || box.y1 > p.y2));
+  }
+  const cx = W/2, cy = H/2;
+  const g = svg.append("g");
+
+  CLOUD_WORDS.forEach((w,idx) => {
+    const size = fs(w.count);
+    ctx.font = `${w.count>=25?750:650} ${size}px "Segoe UI", Arial, sans-serif`;
+    const tw = ctx.measureText(w.text).width;
+    const th = size;
+    let angle = 0, radius = 0, x=cx, y=cy, tries=0, found=false;
+    while(tries < 2200){
+      x = cx + radius*Math.cos(angle) - tw/2;
+      y = cy + radius*Math.sin(angle) - th/2;
+      const box = {x1:x-3,x2:x+tw+3,y1:y-3,y2:y+th+3};
+      if(box.x1>4 && box.x2<W-4 && box.y1>4 && box.y2<H-4 && !overlaps(box)){
+        placed.push(box); found = true; break;
+      }
+      angle += 0.32; radius += 1.6; tries++;
+    }
+    if(!found){ return; }
+    g.append("text")
+      .attr("x", x + tw/2).attr("y", y + th*0.78)
+      .attr("text-anchor","middle")
+      .attr("font-size", size)
+      .attr("font-weight", w.count>=25?750:600)
+      .attr("fill", palette[idx % palette.length])
+      .style("cursor","default")
+      .text(w.text)
+      .append("title").text(`${w.text} — ${w.count} menciones`);
+  });
+})();
+
+/* ============================================================
+   PARTE B — reusable force-graph renderer
+   ============================================================ */
+function renderGraph(svgId, nodes, edges, opts){
+  opts = opts || {};
+  const svgEl = document.getElementById(svgId);
+  const W = svgEl.parentElement.clientWidth || 900;
+  const H = svgEl.parentElement.clientHeight || 520;
+  const svg = d3.select("#"+svgId).attr("viewBox",`0 0 ${W} ${H}`);
+  svg.selectAll("*").remove();
+
+  const nodeColor = opts.nodeColor || (d => "#1f6ecf");
+  const freqKey = opts.freqKey || "freq";
+
+  const rScale = d3.scaleSqrt()
+    .domain(d3.extent(nodes, d=>d[freqKey]||1))
+    .range(opts.rRange || [7,28]);
+  const wScale = d3.scaleLinear()
+    .domain(d3.extent(edges, d=>d.weight))
+    .range([1,6]);
+
+  const nodesC = nodes.map(d => ({...d}));
+  const linksC = edges.map(d => ({...d}));
+
+  const sim = d3.forceSimulation(nodesC)
+    .force("link", d3.forceLink(linksC).id(d=>d.id).distance(d => 120 - d.weight*3).strength(0.35))
+    .force("charge", d3.forceManyBody().strength(opts.charge || -220))
+    .force("center", d3.forceCenter(W/2, H/2))
+    .force("collide", d3.forceCollide().radius(d => rScale(d[freqKey]||1)+16));
+
+  const linkSel = svg.append("g").selectAll("line")
+    .data(linksC).join("line")
+    .attr("class","cw-link")
+    .attr("stroke-width", d=>wScale(d.weight));
+
+  const nodeSel = svg.append("g").selectAll("g")
+    .data(nodesC).join("g")
+    .call(d3.drag()
+      .on("start",(e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on("drag",(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on("end",(e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+
+  nodeSel.append("circle")
+    .attr("r", d=>rScale(d[freqKey]||1))
+    .attr("fill", d=>nodeColor(d))
+    .attr("fill-opacity",0.88);
+
+  nodeSel.append("text")
+    .attr("class","cw-node-label")
+    .attr("text-anchor","middle")
+    .attr("dy", d => -rScale(d[freqKey]||1)-6)
+    .attr("font-size", 12)
+    .attr("font-weight", 650)
+    .text(d=>d.id);
+
+  const neighborMap = {};
+  linksC.forEach(l => {
+    const s = typeof l.source === "object" ? l.source.id : l.source;
+    const t = typeof l.target === "object" ? l.target.id : l.target;
+    (neighborMap[s] ||= new Set()).add(t);
+    (neighborMap[t] ||= new Set()).add(s);
+  });
+
+  nodeSel.on("mouseenter", (e,d) => {
+    const neigh = neighborMap[d.id] || new Set();
+    nodeSel.select("circle").attr("fill-opacity", n2 => n2.id===d.id || neigh.has(n2.id) ? 0.95 : 0.15);
+    nodeSel.select("text").attr("opacity", n2 => n2.id===d.id || neigh.has(n2.id) ? 1 : 0.2);
+    linkSel.attr("stroke-opacity", l => {
+      const s = typeof l.source === "object" ? l.source.id : l.source;
+      const t = typeof l.target === "object" ? l.target.id : l.target;
+      return (s===d.id || t===d.id) ? 0.9 : 0.06;
+    });
+  }).on("mouseleave", () => {
+    nodeSel.select("circle").attr("fill-opacity",0.88);
+    nodeSel.select("text").attr("opacity",1);
+    linkSel.attr("stroke-opacity",1);
+  });
+
+  sim.on("tick", () => {
+    nodesC.forEach(d => {
+      const r = rScale(d[freqKey]||1);
+      d.x = Math.max(r+50, Math.min(W-r-50, d.x));
+      d.y = Math.max(r+28, Math.min(H-r-16, d.y));
+    });
+    linkSel.attr("x1", d=>d.source.x).attr("y1", d=>d.source.y).attr("x2", d=>d.target.x).attr("y2", d=>d.target.y);
+    nodeSel.attr("transform", d=>`translate(${d.x},${d.y})`);
+  });
+}
+
+/* ---- Conceptos / Adjetivos tabs ---- */
+const tabConcepts = document.getElementById("cw-tab-concepts");
+const tabAdjectives = document.getElementById("cw-tab-adjectives");
+const relationLegend = document.getElementById("cw-relation-legend");
+
+function drawConcepts(){
+  tabConcepts.classList.add("cw-tab-active");
+  tabAdjectives.classList.remove("cw-tab-active");
+  relationLegend.innerHTML = '<span><i class="cw-i-noun"></i>Concepto</span>';
+  renderGraph("cw-relation", CONCEPT_NODES, CONCEPT_EDGES, {nodeColor: () => "#1f6ecf", freqKey:"freq", rRange:[7,30]});
+}
+function drawAdjectives(){
+  tabAdjectives.classList.add("cw-tab-active");
+  tabConcepts.classList.remove("cw-tab-active");
+  relationLegend.innerHTML = '<span><i class="cw-i-noun"></i>Concepto (sustantivo)</span><span><i class="cw-i-adj"></i>Adjetivo</span>';
+  renderGraph("cw-relation", ADJ_NODES, ADJ_EDGES, {
+    nodeColor: d => d.type==="adj" ? "#b1560f" : "#1f6ecf",
+    freqKey:"freq", rRange:[6,24], charge:-180
+  });
+}
+tabConcepts.addEventListener("click", drawConcepts);
+tabAdjectives.addEventListener("click", drawAdjectives);
+drawConcepts();
+
+/* ---- Per-question selector ---- */
+const qSelect = document.getElementById("cw-question-select");
+const qCount = document.getElementById("cw-question-count");
+const Q_COLORS = ["#1f6ecf","#2a9d50","#b1560f","#8a3ab2","#c2185b","#00838f","#5d4037","#455a64","#e65100"];
+const qKeys = Object.keys(PER_Q);
+qKeys.forEach((q,i) => {
+  const opt = document.createElement("option");
+  opt.value = q; opt.textContent = q;
+  qSelect.appendChild(opt);
+});
+function drawQuestion(){
+  const q = qSelect.value;
+  const idx = qKeys.indexOf(q);
+  const color = Q_COLORS[idx % Q_COLORS.length];
+  const data = PER_Q[q];
+  qCount.textContent = `${data.edges.length} relaciones · 7 respuestas`;
+  renderGraph("cw-question-net", data.nodes, data.edges, {
+    nodeColor: d => d.type === "adj" ? color : "#42506e",
+    freqKey: null, rRange:[8,16], charge:-160
+  });
+}
+qSelect.addEventListener("change", drawQuestion);
+qSelect.value = qKeys[0];
+drawQuestion();
+
+/* ============================================================
+   SGCN cycle diagram (dimension-safe: text auto-fits circle)
+   ============================================================ */
+(function(){
+  const svg = d3.select("#cw-ciclo");
+  const size = 440, cx = size/2, cy = size/2, r = 150, nodeR = 52;
+  const steps = ["BIA","Estrategias","Planes","Capacitación y Pruebas","Mejora continua"];
+  const n = steps.length;
+
+  svg.append("circle").attr("cx",cx).attr("cy",cy).attr("r",r)
+     .attr("fill","none").attr("stroke","#dce5ef").attr("stroke-width",2).attr("stroke-dasharray","4 6");
+  svg.append("text").attr("x",cx).attr("y",cy-6).attr("text-anchor","middle")
+     .attr("font-size",15).attr("font-weight",750).attr("fill","#003366").text("SGCN");
+  svg.append("text").attr("x",cx).attr("y",cy+13).attr("text-anchor","middle")
+     .attr("font-size",11.5).attr("fill","#526071").text("ciclo continuo");
+
+  const positions = steps.map((s,i) => {
+    const angle = (Math.PI*2 * i)/n - Math.PI/2;
+    return {label:s, x: cx + r*Math.cos(angle), y: cy + r*Math.sin(angle)};
+  });
+
+  for(let i=0;i<n;i++){
+    const a1 = (Math.PI*2*i)/n - Math.PI/2 + 0.30;
+    const a2 = (Math.PI*2*(i+1))/n - Math.PI/2 - 0.30;
+    const path = d3.path();
+    path.arc(cx,cy,r,a1,a2);
+    svg.append("path").attr("d",path.toString())
+       .attr("fill","none").attr("stroke","#1f6ecf").attr("stroke-width",2)
+       .attr("marker-end","url(#cw-arrow)");
+  }
+  svg.append("defs").append("marker")
+     .attr("id","cw-arrow").attr("viewBox","0 0 10 10").attr("refX",8).attr("refY",5)
+     .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto-start-reverse")
+     .append("path").attr("d","M0,0 L10,5 L0,10 Z").attr("fill","#1f6ecf");
+
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  const maxTextWidth = nodeR*2 - 14;
+
+  positions.forEach(p => {
+    const g = svg.append("g");
+    g.append("circle").attr("cx",p.x).attr("cy",p.y).attr("r",nodeR)
+     .attr("fill","#fff").attr("stroke","#1f6ecf").attr("stroke-width",2);
+    const words = p.label.split(" ");
+    const fontSize = 11;
+    ctx.font = `700 ${fontSize}px "Segoe UI", Arial, sans-serif`;
+    words.forEach((w,i) => {
+      const tw = ctx.measureText(w).width;
+      const t = g.append("text")
+        .attr("x",p.x).attr("y", p.y + (i - (words.length-1)/2)*13 + 4)
+        .attr("text-anchor","middle").attr("font-size",fontSize).attr("font-weight",700)
+        .attr("fill","#003366").text(w);
+      if(tw > maxTextWidth){
+        t.attr("textLength", maxTextWidth).attr("lengthAdjust","spacingAndGlyphs");
+      }
+    });
+  });
+})();
+
+/* ============================================================
+   CIERRE — mesa intermedia diagram
+   ============================================================ */
+(function(){
+  const svg = d3.select("#cw-mesa");
+  const boxes = [
+    {x:10,  w:210, label:"Evento Crítico y/o Disruptivo", sub:"Se identifica una disrupción"},
+    {x:265, w:190, label:"Coordinadores Especiales *", sub:"Mesa consultiva — asesoran"},
+    {x:500, w:210, label:"CCCN", sub:"Decide la activación de crisis"},
+  ];
+  const y = 55, h = 70;
+  boxes.forEach((b,i) => {
+    svg.append("rect").attr("x",b.x).attr("y",y).attr("width",b.w).attr("height",h)
+       .attr("rx",12).attr("fill", i===1 ? "#eaf2ff" : "#fff")
+       .attr("stroke","#1f6ecf").attr("stroke-width", i===1?2:1.5);
+    svg.append("text").attr("x",b.x+b.w/2).attr("y",y+30).attr("text-anchor","middle")
+       .attr("font-size",13.5).attr("font-weight",750).attr("fill","#003366").text(b.label);
+    svg.append("text").attr("x",b.x+b.w/2).attr("y",y+50).attr("text-anchor","middle")
+       .attr("font-size",11).attr("fill","#526071").text(b.sub);
+    if(i<boxes.length-1){
+      const x1 = b.x+b.w, x2 = boxes[i+1].x;
+      svg.append("line").attr("x1",x1+4).attr("y1",y+h/2).attr("x2",x2-8).attr("y2",y+h/2)
+         .attr("stroke","#1f6ecf").attr("stroke-width",2).attr("marker-end","url(#cw-arrow2)");
+    }
+  });
+  svg.append("defs").append("marker")
+     .attr("id","cw-arrow2").attr("viewBox","0 0 10 10").attr("refX",8).attr("refY",5)
+     .attr("markerWidth",6).attr("markerHeight",6).attr("orient","auto-start-reverse")
+     .append("path").attr("d","M0,0 L10,5 L0,10 Z").attr("fill","#1f6ecf");
+  svg.append("text").attr("x",360).attr("y",y+h+34).attr("text-anchor","middle")
+     .attr("font-size",12).attr("font-weight",650).attr("fill","#526071")
+     .text("Coordinado por la UO Gestión de la Continuidad del Negocio");
+})();
+</script>
+</body>
+</html>
